@@ -14,10 +14,6 @@ var files = [
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-app.get('/', function(req, res) {
-  res.type('text/plain');
-  res.send('Jestem miłym motylem...');
-});
 
 app.get('/file/:id', function(req, res) {
 	var id = req.params.id;
