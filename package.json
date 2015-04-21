@@ -1,0 +1,9 @@
+{
+  "name": "index-files-rest",
+  "description": "System do idneksowania plikow tekstowych.",
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "^1.12.3",
+    "express": "4.x"
+  }
+}
