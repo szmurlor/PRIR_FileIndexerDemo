@@ -21,13 +21,15 @@ var options = {
 };
 
 
-fs.readFile('/home/szmurlor/src/dydaktyka/prir/FileIndexerNodeJS/app.js', 'utf8', function (err, data) {
+fs.readFile('reymont-chlopi-zima.txt', 'utf8', function (err, data) {
     if (err) {
         return console.log(err);
     }
 
     var post_data = JSON.stringify({
-        'data' : data
+        filename: "reymont-chlopi-zima.txt",
+        data: data,
+        folder: "/home/data/example"
     });
 
     var req = http.request(options, callback);

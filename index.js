@@ -12,27 +12,7 @@ var files = [
 ];
 
 app.use(express.static('public'));
-app.use(bodyParser.json());
-
-
-app.get('/file/:id', function(req, res) {
-	var id = req.params.id;
-
-	var f = null;    
-	for (i=0; i < files.length; i++ ) {
-		if (files[i].id == id) {
-			f = files[i];
-			break;
-		}
-	}
-	if (f == null) {
-		res.type("text/plain");
-		res.send("Nie mogę odnaleźć pliku o id: " + id);
-	} else {
-    	res.json(f);
-    }
-});
-
+app.use(bodyParser.json({limit: '50mb'}));
 
 app.get('/file/:id', function(req, res) {
 	var id = req.params.id;
@@ -52,23 +32,34 @@ app.get('/file/:id', function(req, res) {
     }
 });
 
+app.get('/files', function(req, res) {
+	var id = req.params.id;
+	var f = [];
+
+	for (i=0; i < files.length; i++ ) {
+		var tmp = {
+			id: files[i].id,
+			name: files[i].filename
+		}
+		f.push(tmp);
+	}
+
+	res.json(f);
+});
+
+var id = 1;
 
 app.post('/echo', function(req, res) {
-	var s = '<p>';
 	console.log(req.body);
-
-/*	req.on('data', function(chunk) {
-		s += chunk;		
-		console.log('Otrzymalem: ' + chunk);
-		console.log('Otrzymalem dane: ' + req.body.data);
-	});
-	req.on('end', function() {
-		s += '</p>';
-		res.send(s);
-	});
-*/	
-	s += req.body.data;
-	s += '</p>';
+	id++;
+	file = {
+		id: id,
+		filename: req.body.filename,
+		data: req.body.data,
+		folder: "/home/data/example"
+	};
+	files.push(file);
+	var s = '<p>OK</p>';
 	res.send(s);
 });
 
