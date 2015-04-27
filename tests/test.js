@@ -30,15 +30,16 @@ var options_search = {
 };
 
 
-async.series(
+async.series([
     function (callback) {
-        fs.readFile('reymont-chlopi-zima.txt', 'utf8', function (err, data) {
+        fs.readFile('tekst-krotki.txt', 'utf8', function (err, data) {
             if (err) {
                 return console.log(err);
             }
 
             var post_data = JSON.stringify({
-                filename: "reymont-chlopi-zima.txt",
+                // filename: "reymont-chlopi-zima.txt",
+                filename: "tekst-krotki.txt",
                 data: data,
                 folder: "/home/data/example"
             });
@@ -47,12 +48,13 @@ async.series(
             req.write(post_data);
             req.end();
 
-            // console.log(data);
-        })
+            console.log(data);
+            callback();
+        });
     },
-    function() {
+    function (callback) {
         console.log('Pytam search...');
-        options_search.path = "/search/ala+ma+kota";
+        options_search.path = "/search/jesienny";
         var req = http.request(options_search, function (response) {
             var str = ''
             response.on('data', function (chunk) {
@@ -64,7 +66,9 @@ async.series(
             });
         });
         req.end();
-    });
+        // callback();
+    }]);
+
 
 
 
