@@ -14,6 +14,11 @@ var files = [
 app.use(express.static('public'));
 app.use(bodyParser.json({limit: '50mb'}));
 
+app.get('/search/:word', function(req, res) {
+    var s = '<p>Szukam: ' + req.params.word + '</p>';
+    res.send(s);
+});
+
 app.get('/file/:id', function(req, res) {
 	var id = req.params.id;
 
@@ -49,7 +54,7 @@ app.get('/files', function(req, res) {
 
 var id = 1;
 
-app.post('/echo', function(req, res) {
+app.post('/push', function(req, res) {
 	console.log(req.body);
 	id++;
 	file = {
