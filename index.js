@@ -24,7 +24,7 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.get('/search/:word', function(req, res) {
 	var ans = [];
 	var word = querystring.unescape(req.params.word);
-	var i;
+	var i, r;
 	console.log('Szukam: ' + word + '.');
 
 
@@ -45,13 +45,12 @@ function find(f, word) {
 					positions: []
 				};
 	var s = f.data;
-	m = word.length;
-	n = s.length;
+	var m = word.length;
 	var Sx = 0;
 	var Sy = 0;
 	var line = 0;
 
-	for (i=0; i < m; i++) {
+	for (var i=0; i < m; i++) {
 		Sx = Sx + word.charCodeAt(i);
 		Sy = Sy + s.charCodeAt(i);
 
@@ -67,7 +66,7 @@ function find(f, word) {
 				});
 			}
 		}
-		Sy = Sy - s.charCodeAt(i) + s.charCodeAt(i+m)
+		Sy = Sy - s.charCodeAt(i) + s.charCodeAt(i+m);
 		if (s.charCodeAt(i+m) == 10)
 			line++;
 	}
@@ -78,14 +77,13 @@ function find(f, word) {
 
 
 app.get('/files', function(req, res) {
-	var id = req.params.id;
 	var f = [];
 
-	for (i=0; i < files.length; i++ ) {
+	for (var i=0; i < files.length; i++ ) {
 		var tmp = {
 			id: files[i].id,
 			name: files[i].filename
-		}
+		};
 		f.push(tmp);
 	}
 
@@ -96,8 +94,8 @@ app.get('/files', function(req, res) {
 app.post('/push', function(req, res) {
 	console.log(req.body);
 	id++;
-	file = {
-		id: id,
+	var file = {
+		id: "" + id,
 		filename: req.body.filename,
 		data: req.body.data,
 		folder: "/home/data/example"
@@ -115,7 +113,7 @@ app.get('/file/:id', function(req, res) {
 	var id = req.params.id;
 
 	var f = null;
-	for (i=0; i < files.length; i++ ) {
+	for (var i=0; i < files.length; i++ ) {
 		if (files[i].id == id) {
 			f = files[i];
 			break;
