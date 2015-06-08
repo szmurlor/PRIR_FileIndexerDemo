@@ -5,7 +5,7 @@
 var imax = 2;
 var imaxe = 10;
 var imaxne = 10;
-var imaxkn = 10000;
+var imaxkn = 10;
 
 
 var http = require('http');
@@ -96,53 +96,15 @@ exports.testDlugi = function(test){
 };
 
 exports.testSearchNoExists = function(test){
-    var i = 0;
-
-    function doSearch() {
-        options_search.path = "/search/jesiennykol";
-        var req = http.request(options_search, function (response) {
-            var str = ''
-            response.on('data', function (chunk) {
-                str += chunk;
-            });
-
-            response.on('end', function () {
-                console.log(str);
-                if (i++ < imaxne)
-                    doSearch();
-                else
-                    test.done();
-            });
-        });
-        req.end();
-    }
-
-    doSearch();
+    doSearch(test, 0, "jesiennykol", true, false);
 };
 
+
 exports.testSearchExists = function(test){
-    var i = 0;
-
-    function doSearch() {
-        options_search.path = "/search/0011223344";
-        var req = http.request(options_search, function (response) {
-            var str = ''
-            response.on('data', function (chunk) {
-                str += chunk;
-            });
-
-            response.on('end', function () {
-                console.log(str);
-                if (i++ < imaxe)
-                    doSearch();
-                else
-                    test.done();
-            });
-        });
-        req.end();
-    }
-
-    doSearch();
+    doSearch(test, 0, "0011223344", false, true, function (test, response) {
+        // test.ok(response.indexOf('{"pos":7997,"line":56}') >= 0, "Nie odnaleziono ciągu znaków 0011223344!");
+        test.ok(response.indexOf('7997') >= 0, "Nie odnaleziono ciągu znaków 0011223344!");
+    });
 };
 
 exports.testKrotkiN = function(test){
@@ -182,3 +144,37 @@ exports.testKrotkiN = function(test){
     }
     doKrotoki();
 };
+
+exports.testSearchNoExists = function(test){
+    doSearch(test, 0, "jesiennykoloudsfidasfdsuifsfyasduiyfoisuayfouisayfuyfoudysfouisdyfouiaydhfuidsahfiusdhafui9798876udyfiuaysfiusd12222-2-2--22-sdoufiysdaoiufyaos", true, false);
+};
+
+
+
+
+function doSearch(test, i, what, increment,print, callback) {
+    if (increment)
+        options_search.path = "/search/" + what + i % 200;
+    else
+        options_search.path = "/search/" + what;
+    var req = http.request(options_search, function (response) {
+        var str = ''
+        response.on('data', function (chunk) {
+            str += chunk;
+        });
+
+        response.on('end', function () {
+            if (print)
+                console.log(str);
+            if (callback)
+                callback(test, str);
+
+
+            if (i < imaxe)
+                doSearch(test, i+1, what, increment, print, callback);
+            else
+                test.done();
+        });
+    });
+    req.end();
+}
