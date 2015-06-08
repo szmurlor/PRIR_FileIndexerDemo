@@ -2,7 +2,7 @@ var http = require('http');
 var fs = require('fs');
 var async = require('async');
 
-callback = function(response) {
+mycallback = function(response) {
   var str = ''
   response.on('data', function (chunk) {
     str += chunk;
@@ -44,7 +44,7 @@ async.series([
                 folder: "/home/data/example"
             });
 
-            var req = http.request(options_push, callback);
+            var req = http.request(options_push, mycallback);
             req.write(post_data);
             req.end();
 
@@ -66,7 +66,7 @@ async.series([
             });
         });
         req.end();
-        // callback();
+        callback();
     }]);
 
 
