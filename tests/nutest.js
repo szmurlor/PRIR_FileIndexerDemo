@@ -12,19 +12,23 @@ var http = require('http');
 var fs = require('fs');
 
 var options_push = {
-    host: 'localhost',
+    //host: 'localhost',
+    host: '10.146.51.117',
     path: '/push',
-    port: '4730',
+    // port: '4730',
+    port: '8000',
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json; charset=utf-8' }
 };
 
 var options_search = {
-    host: 'localhost',
+    //host: 'localhost',
+    host: '10.146.51.117',
     path: '/search',
-    port: '4730',
+    //port: '4730',
+    port: '8000',
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json; charset=utf-8' }
 };
 
 
@@ -42,6 +46,7 @@ exports.testKrotki = function(test){
         });
 
         var str = "";
+	options_push.headers['Content-length'] = post_data.length;
         var req = http.request(options_push, function(res) {
             res.on('data', function(chunk) {
                 str += chunk;
@@ -74,6 +79,7 @@ exports.testDlugi = function(test){
             });
 
             var str = "";
+	    options_push.headers['Content-length'] = post_data.length;
             var req = http.request(options_push, function (res) {
                 res.on('data', function (chunk) {
                     str += chunk;
@@ -124,6 +130,7 @@ exports.testKrotkiN = function(test){
             });
 
             var str = "";
+	    options_push.headers['Content-length'] = post_data.length;
             var req = http.request(options_push, function(res) {
                 res.on('data', function(chunk) {
                     str += chunk;
