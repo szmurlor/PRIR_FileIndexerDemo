@@ -92,7 +92,7 @@ app.get('/files', function(req, res) {
 
 
 app.post('/push', function(req, res) {
-	console.log(req.body);
+	// console.log(req.body);
 	id++;
 	var file = {
 		id: "" + id,
