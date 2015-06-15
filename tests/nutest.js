@@ -13,20 +13,20 @@ var fs = require('fs');
 
 var options_push = {
     //host: 'localhost',
-    host: '10.146.51.117',
+    host: '10.146.51.115',
     path: '/push',
     // port: '4730',
-    port: '8000',
+    port: '80',
     method: 'POST',
     headers: { 'Content-Type': 'application/json; charset=utf-8' }
 };
 
 var options_search = {
     //host: 'localhost',
-    host: '10.146.51.117',
+    host: '10.146.51.115',
     path: '/search',
     //port: '4730',
-    port: '8000',
+    port: '80',
     method: 'GET',
     headers: { 'Content-Type': 'application/json; charset=utf-8' }
 };
@@ -46,7 +46,8 @@ exports.testKrotki = function(test){
         });
 
         var str = "";
-	options_push.headers['Content-length'] = post_data.length;
+	// options_push.headers['Content-length'] = post_data.length;
+	options_push.headers['Content-length'] = Buffer.byteLength(post_data, 'utf8');
         var req = http.request(options_push, function(res) {
             res.on('data', function(chunk) {
                 str += chunk;
@@ -79,7 +80,9 @@ exports.testDlugi = function(test){
             });
 
             var str = "";
-	    options_push.headers['Content-length'] = post_data.length;
+	 // Buffer.byteLength(str, 'utf8')
+	    // options_push.headers['Content-length'] = post_data.length;
+	    options_push.headers['Content-length'] = Buffer.byteLength(post_data, 'utf8');
             var req = http.request(options_push, function (res) {
                 res.on('data', function (chunk) {
                     str += chunk;
@@ -130,7 +133,8 @@ exports.testKrotkiN = function(test){
             });
 
             var str = "";
-	    options_push.headers['Content-length'] = post_data.length;
+	//    options_push.headers['Content-length'] = post_data.length;
+	options_push.headers['Content-length'] = Buffer.byteLength(post_data, 'utf8');
             var req = http.request(options_push, function(res) {
                 res.on('data', function(chunk) {
                     str += chunk;
